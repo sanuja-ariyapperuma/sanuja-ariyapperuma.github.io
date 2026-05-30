@@ -44,6 +44,9 @@
   @keyframes pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: .5; } }
   .nav-links { display: flex; gap: 28px; font-size: 13px; color: var(--ink-dim); font-family: var(--mono); }
   .nav-links a:hover { color: var(--cyan); }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .lang-btn { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.1em; padding: 6px 13px; border: 1px solid var(--line); border-radius: 8px; background: var(--glass); color: var(--cyan); cursor: pointer; backdrop-filter: blur(8px); transition: border-color .2s, color .2s, background .2s; }
+  .lang-btn:hover { border-color: var(--cyan); background: rgba(69,214,255,0.07); }
   .nav-toggle { display: none; width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 10px; background: var(--glass); backdrop-filter: blur(8px); cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 5px; }
   .nav-toggle span { display: block; width: 17px; height: 1.5px; background: var(--ink); transition: transform .3s, opacity .3s; }
   body.menu-open .nav-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
@@ -53,6 +56,7 @@
   body.menu-open .mobile-menu { opacity: 1; pointer-events: auto; }
   .mobile-menu a { font-family: var(--mono); font-size: 24px; color: var(--ink-dim); padding: 12px; transition: color .2s, transform .2s; }
   .mobile-menu a:hover { color: var(--cyan); transform: translateX(4px); }
+  .lang-btn-mobile { font-size: 16px; padding: 10px 22px; margin-top: 20px; }
   @media (max-width: 720px) { .nav-links { display: none; } .nav-toggle { display: flex; } }
   @media (min-width: 721px) { .mobile-menu { display: none; } }
 
@@ -174,30 +178,40 @@
 <nav>
   <a class="brand" href="index.html"><span class="node"></span>A.Sanuja</a>
   <div class="nav-links">
-    <a href="#writing">writing</a><a href="#work">work</a><a href="#stack">stack</a><a href="#contact">contact</a>
+    <a href="#writing" data-i18n="nav-writing">writing</a>
+    <a href="#work" data-i18n="nav-work">work</a>
+    <a href="#stack" data-i18n="nav-stack">stack</a>
+    <a href="#contact" data-i18n="nav-contact">contact</a>
   </div>
-  <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="nav-right">
+    <button class="lang-btn" id="langBtn" aria-label="Switch language">FI</button>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#writing">writing</a><a href="#work">work</a><a href="#stack">stack</a><a href="#contact">contact</a>
+  <a href="#writing" data-i18n="nav-writing">writing</a>
+  <a href="#work" data-i18n="nav-work">work</a>
+  <a href="#stack" data-i18n="nav-stack">stack</a>
+  <a href="#contact" data-i18n="nav-contact">contact</a>
+  <button class="lang-btn lang-btn-mobile" id="langBtnMobile" aria-label="Switch language">FI</button>
 </div>
 
 <div class="wrap">
   <header data-screen-label="hero">
-    <div class="tag reveal"><span class="live"></span>AI-Driven Software Engineer · Available</div>
-    <h1 class="reveal"><span class="dim">Engineering</span><br />the <span class="grad">intelligent</span> web.</h1>
+    <div class="tag reveal"><span class="live"></span><span data-i18n="hero-tag">AI-Driven Software Engineer · Available</span></div>
+    <h1 class="reveal" data-i18n="hero-h1"><span class="dim">Engineering</span><br />the <span class="grad">intelligent</span> web.</h1>
     <div class="hero-sub">
-      <p class="reveal">Seven years of secure, cloud-native <b>.NET</b> — now building at the edge of <b>AI-assisted</b> software engineering.</p>
+      <p class="reveal" data-i18n="hero-sub-p">Seven years of secure, cloud-native <b>.NET</b> — now building at the edge of <b>AI-assisted</b> software engineering.</p>
       <div class="cta reveal">
-        <a class="btn primary" href="#work">Explore work <span class="arr">→</span></a>
+        <a class="btn primary" href="#work" data-i18n="hero-btn-primary">Explore work <span class="arr">→</span></a>
         <a class="btn glass" href="https://github.com/sanuja-ariyapperuma" target="_blank" rel="noopener">GitHub <span class="arr">↗</span></a>
       </div>
     </div>
     <div class="stat-strip reveal">
-      <div class="stat"><div class="v" data-count="7" data-suffix="+">0</div><div class="k">YEARS EXPERIENCE</div></div>
-      <div class="stat"><div class="v">.NET <span class="u">10</span></div><div class="k">CORE PLATFORM</div></div>
-      <div class="stat"><div class="v">C# · <span class="u">TS</span></div><div class="k">DAILY LANGUAGES</div></div>
-      <div class="stat"><div class="v">AI<span class="u">·</span>first</div><div class="k">ENGINEERING</div></div>
+      <div class="stat"><div class="v" data-count="7" data-suffix="+">0</div><div class="k" data-i18n="stat-k-1">YEARS EXPERIENCE</div></div>
+      <div class="stat"><div class="v">.NET <span class="u">10</span></div><div class="k" data-i18n="stat-k-2">CORE PLATFORM</div></div>
+      <div class="stat"><div class="v">C# · <span class="u">TS</span></div><div class="k" data-i18n="stat-k-3">DAILY LANGUAGES</div></div>
+      <div class="stat"><div class="v">AI<span class="u">·</span>first</div><div class="k" data-i18n="stat-k-4">ENGINEERING</div></div>
     </div>
   </header>
 
@@ -206,67 +220,198 @@
   </section>
 
   <section id="writing" data-screen-label="writing">
-    <div class="eyebrow reveal">01 / Writing</div>
-    <h2 class="sec-title reveal">Notes from the <span class="dim">build.</span></h2>
+    <div class="eyebrow reveal" data-i18n="writing-eyebrow">01 / Writing</div>
+    <h2 class="sec-title reveal" data-i18n="writing-title">Notes from the <span class="dim">build.</span></h2>
     <div id="writing-list" class="reveal"><!-- populated by JS --></div>
     <div class="reveal" style="margin-top: 28px;">
-      <a class="btn glass" href="blog.html">All posts <span class="arr">→</span></a>
+      <a class="btn glass" href="blog.html" data-i18n="writing-all">All posts <span class="arr">→</span></a>
     </div>
   </section>
 
   <section id="work" data-screen-label="work">
-    <div class="eyebrow reveal">02 / Selected Work</div>
-    <h2 class="sec-title reveal">Things I've <span class="dim">built &amp; explored.</span></h2>
+    <div class="eyebrow reveal" data-i18n="work-eyebrow">02 / Selected Work</div>
+    <h2 class="sec-title reveal" data-i18n="work-title">Things I've <span class="dim">built &amp; explored.</span></h2>
     <div class="proj-grid reveal">
       <div class="card proj-card wide" data-tilt>
-        <div class="top"><span class="idx">/01</span><span class="badge"><span class="d"></span>Active R&amp;D</span></div>
-        <h3>AI-Assisted Engineering Practice</h3>
-        <p>Exploring how AI can effectively support quality software engineering — currently evaluating BMAD V6 and Matt Pocock's skill sets, each strong from a different angle, with the goal of mastering both.</p>
+        <div class="top"><span class="idx">/01</span><span class="badge"><span class="d"></span><span data-i18n="work-badge-1">Active R&amp;D</span></span></div>
+        <h3 data-i18n="work-proj-1-title">AI-Assisted Engineering Practice</h3>
+        <p data-i18n="work-proj-1-desc">Exploring how AI can effectively support quality software engineering — currently evaluating BMAD V6 and Matt Pocock's skill sets, each strong from a different angle, with the goal of mastering both.</p>
         <div class="tstack" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:20px;"><span class="chip">BMAD V6</span><span class="chip">Agent skills</span><span class="chip">Spec-driven</span></div>
       </div>
       <div class="card proj-card" data-tilt>
-        <div class="top"><span class="idx">/02</span><span class="badge">Tooling</span></div>
+        <div class="top"><span class="idx">/02</span><span class="badge"><span data-i18n="work-badge-2">Tooling</span></span></div>
         <h3>Prompt Bank</h3>
-        <p>An app built to learn efficient use of Claude &amp; GitHub Copilot — leveraging custom agents, instructions and skills to raise code quality and cut hallucination.</p>
+        <p data-i18n="work-proj-2-desc">An app built to learn efficient use of Claude &amp; GitHub Copilot — leveraging custom agents, instructions and skills to raise code quality and cut hallucination.</p>
         <div class="tstack" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:20px;"><span class="chip">Custom agents</span><span class="chip">Skills</span></div>
       </div>
       <div class="card proj-card" data-tilt>
-        <div class="top"><span class="idx">/03</span><span class="badge">Full-stack</span></div>
-        <h3>Travel Agency Platform</h3>
-        <p>Cloud-native app automating customer &amp; lead management for travel agencies. React front end, .NET Minimal API back end, MySQL.</p>
+        <div class="top"><span class="idx">/03</span><span class="badge"><span data-i18n="work-badge-3">Full-stack</span></span></div>
+        <h3 data-i18n="work-proj-3-title">Travel Agency Platform</h3>
+        <p data-i18n="work-proj-3-desc">Cloud-native app automating customer &amp; lead management for travel agencies. React front end, .NET Minimal API back end, MySQL.</p>
         <div class="tstack" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:20px;"><span class="chip">React</span><span class="chip">.NET Minimal API</span><span class="chip">MySQL</span></div>
       </div>
     </div>
   </section>
 
   <section id="stack" data-screen-label="stack">
-    <div class="eyebrow reveal">03 / Stack</div>
-    <h2 class="sec-title reveal">The <span class="dim">toolkit.</span></h2>
+    <div class="eyebrow reveal" data-i18n="stack-eyebrow">03 / Stack</div>
+    <h2 class="sec-title reveal" data-i18n="stack-title">The <span class="dim">toolkit.</span></h2>
     <div class="stack-grid reveal">
-      <div class="card stack-card"><h4>Languages</h4><ul><li>C#</li><li>TypeScript</li><li>JavaScript</li><li>SQL</li></ul></div>
-      <div class="card stack-card"><h4>Frameworks</h4><ul><li>.NET 10</li><li>ASP.NET</li><li>Minimal API</li><li>React</li></ul></div>
-      <div class="card stack-card"><h4>AI Toolchain</h4><ul><li>GitHub Copilot</li><li>Claude Code</li><li>BMAD V6</li><li>Matt Pocock skills</li></ul></div>
-      <div class="card stack-card"><h4>Data</h4><ul><li>PostgreSQL</li><li>MariaDB</li><li>MS SQL Server</li><li>MySQL</li></ul></div>
+      <div class="card stack-card"><h4 data-i18n="stack-cat-1">Languages</h4><ul><li>C#</li><li>TypeScript</li><li>JavaScript</li><li>SQL</li></ul></div>
+      <div class="card stack-card"><h4 data-i18n="stack-cat-2">Frameworks</h4><ul><li>.NET 10</li><li>ASP.NET</li><li>Minimal API</li><li>React</li></ul></div>
+      <div class="card stack-card"><h4 data-i18n="stack-cat-3">AI Toolchain</h4><ul><li>GitHub Copilot</li><li>Claude Code</li><li>BMAD V6</li><li>Matt Pocock skills</li></ul></div>
+      <div class="card stack-card"><h4 data-i18n="stack-cat-4">Data</h4><ul><li>PostgreSQL</li><li>MariaDB</li><li>MS SQL Server</li><li>MySQL</li></ul></div>
     </div>
   </section>
 
   <section id="contact" data-screen-label="contact">
     <div class="card contact-card reveal">
-      <div class="eyebrow" style="text-align:center;">04 / Contact</div>
-      <h2>Let's build something <span class="grad">intelligent.</span></h2>
-      <p>Open to collaboration on AI-driven engineering and secure .NET systems.</p>
+      <div class="eyebrow" style="text-align:center;" data-i18n="contact-eyebrow">04 / Contact</div>
+      <h2 data-i18n="contact-title">Let's build something <span class="grad">intelligent.</span></h2>
+      <p data-i18n="contact-p">Open to collaboration on AI-driven engineering and secure .NET systems.</p>
       <div class="clinks">
         <a class="btn primary" href="https://github.com/sanuja-ariyapperuma" target="_blank" rel="noopener">GitHub <span class="arr">↗</span></a>
-        <a class="btn glass" href="#">Email <span class="arr">→</span></a>
-        <a class="btn glass" href="#">LinkedIn <span class="arr">↗</span></a>
+        <a class="btn glass" href="#" data-i18n="contact-email">Email <span class="arr">→</span></a>
+        <a class="btn glass" href="#" data-i18n="contact-linkedin">LinkedIn <span class="arr">↗</span></a>
       </div>
     </div>
   </section>
 </div>
 
 <footer>
-  <div class="wrap"><span>© 2026 SANUJA — AI-DRIVEN SOFTWARE ENGINEER</span></div>
+  <div class="wrap"><span data-i18n="footer-text">© 2026 SANUJA — AI-DRIVEN SOFTWARE ENGINEER</span></div>
 </footer>
+
+<script>
+  // ---- i18n ----
+  const STRINGS = {
+    en: {
+      'nav-writing':       'writing',
+      'nav-work':          'work',
+      'nav-stack':         'stack',
+      'nav-contact':       'contact',
+      'hero-tag':          'AI-Driven Software Engineer · Available',
+      'hero-h1':           '<span class="dim">Engineering</span><br />the <span class="grad">intelligent</span> web.',
+      'hero-sub-p':        'Seven years of secure, cloud-native <b>.NET</b> — now building at the edge of <b>AI-assisted</b> software engineering.',
+      'hero-btn-primary':  'Explore work <span class="arr">→</span>',
+      'stat-k-1':          'YEARS EXPERIENCE',
+      'stat-k-2':          'CORE PLATFORM',
+      'stat-k-3':          'DAILY LANGUAGES',
+      'stat-k-4':          'ENGINEERING',
+      'writing-eyebrow':   '01 / Writing',
+      'writing-title':     'Notes from the <span class="dim">build.</span>',
+      'writing-all':       'All posts <span class="arr">→</span>',
+      'work-eyebrow':      '02 / Selected Work',
+      'work-title':        'Things I\'ve <span class="dim">built &amp; explored.</span>',
+      'work-badge-1':      'Active R&amp;D',
+      'work-badge-2':      'Tooling',
+      'work-badge-3':      'Full-stack',
+      'work-proj-1-title': 'AI-Assisted Engineering Practice',
+      'work-proj-1-desc':  'Exploring how AI can effectively support quality software engineering — currently evaluating BMAD V6 and Matt Pocock\'s skill sets, each strong from a different angle, with the goal of mastering both.',
+      'work-proj-2-desc':  'An app built to learn efficient use of Claude &amp; GitHub Copilot — leveraging custom agents, instructions and skills to raise code quality and cut hallucination.',
+      'work-proj-3-title': 'Travel Agency Platform',
+      'work-proj-3-desc':  'Cloud-native app automating customer &amp; lead management for travel agencies. React front end, .NET Minimal API back end, MySQL.',
+      'stack-eyebrow':     '03 / Stack',
+      'stack-title':       'The <span class="dim">toolkit.</span>',
+      'stack-cat-1':       'Languages',
+      'stack-cat-2':       'Frameworks',
+      'stack-cat-3':       'AI Toolchain',
+      'stack-cat-4':       'Data',
+      'contact-eyebrow':   '04 / Contact',
+      'contact-title':     'Let\'s build something <span class="grad">intelligent.</span>',
+      'contact-p':         'Open to collaboration on AI-driven engineering and secure .NET systems.',
+      'contact-email':     'Email <span class="arr">→</span>',
+      'contact-linkedin':  'LinkedIn <span class="arr">↗</span>',
+      'footer-text':       '© 2026 SANUJA — AI-DRIVEN SOFTWARE ENGINEER',
+      'featured-eyebrow':  'Featured post',
+      'read-more':         'Read More →',
+    },
+    fi: {
+      'nav-writing':       'kirjoitukset',
+      'nav-work':          'työ',
+      'nav-stack':         'teknologiat',
+      'nav-contact':       'yhteystiedot',
+      'hero-tag':          'Tekoälypohjainen ohjelmistoinsinööri · Saatavilla',
+      'hero-h1':           '<span class="dim">Rakennan</span><br /><span class="grad">älykkään</span> verkon.',
+      'hero-sub-p':        'Seitsemän vuotta turvallista, pilvinativia <b>.NET</b>-kehitystä — nyt rakentamassa <b>tekoälyavusteisen</b> ohjelmistokehityksen eturintamassa.',
+      'hero-btn-primary':  'Tutustu töihini <span class="arr">→</span>',
+      'stat-k-1':          'VUOTTA KOKEMUSTA',
+      'stat-k-2':          'PÄÄALUSTA',
+      'stat-k-3':          'PÄIVITTÄISET KIELET',
+      'stat-k-4':          'KEHITYSTAPA',
+      'writing-eyebrow':   '01 / Kirjoitukset',
+      'writing-title':     'Muistiinpanoja <span class="dim">rakentamisesta.</span>',
+      'writing-all':       'Kaikki julkaisut <span class="arr">→</span>',
+      'work-eyebrow':      '02 / Valitut projektit',
+      'work-title':        'Asioita joita olen <span class="dim">rakentanut.</span>',
+      'work-badge-1':      'Aktiivinen T&amp;K',
+      'work-badge-2':      'Työkalut',
+      'work-badge-3':      'Full-stack',
+      'work-proj-1-title': 'Tekoälyavusteinen kehityskäytäntö',
+      'work-proj-1-desc':  'Tutkin, kuinka tekoäly voi tehokkaasti tukea laadukasta ohjelmistokehitystä — tällä hetkellä arvioin BMAD V6:a ja Matt Poccockin taitoja, joista kumpikin on vahva eri kulmasta, tavoitteena hallita molemmat.',
+      'work-proj-2-desc':  'Sovellus rakennettu oppimaan Clauden ja GitHub Copilotin tehokkaaseen käyttöön — hyödyntäen mukautettuja agentteja, ohjeita ja taitoja koodin laadun nostamiseksi ja hallusinaatioiden vähentämiseksi.',
+      'work-proj-3-title': 'Matkatoimistoalusta',
+      'work-proj-3-desc':  'Pilvinatiivi sovellus automatisoimaan asiakas- ja liidienhallintaa matkatoimistoille. React-käyttöliittymä, .NET Minimal API -palvelin, MySQL.',
+      'stack-eyebrow':     '03 / Teknologiat',
+      'stack-title':       'Työ<span class="dim">kalupakki.</span>',
+      'stack-cat-1':       'Kielet',
+      'stack-cat-2':       'Kehykset',
+      'stack-cat-3':       'Tekoälytyökalut',
+      'stack-cat-4':       'Tietokanta',
+      'contact-eyebrow':   '04 / Yhteystiedot',
+      'contact-title':     'Rakennetaan jotain <span class="grad">älykästä.</span>',
+      'contact-p':         'Avoin yhteistyöhön tekoälypohjaisessa ohjelmoinnissa ja turvallisissa .NET-järjestelmissä.',
+      'contact-email':     'Sähköposti <span class="arr">→</span>',
+      'contact-linkedin':  'LinkedIn <span class="arr">↗</span>',
+      'footer-text':       '© 2026 SANUJA — TEKOÄLYPOHJAINEN OHJELMISTOINSINÖÖRI',
+      'featured-eyebrow':  'Suosittu artikkeli',
+      'read-more':         'Lue lisää →',
+    }
+  };
+
+  window.LANG = 'en';
+
+  function applyLang(lang, persist) {
+    window.LANG = lang;
+    if (persist) localStorage.setItem('lang', lang);
+    const t = STRINGS[lang];
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+    // Update dynamically-rendered blog elements
+    document.querySelectorAll('.fp-eyebrow').forEach(el => { el.textContent = t['featured-eyebrow']; });
+    document.querySelectorAll('.fp-link').forEach(el => { el.textContent = t['read-more']; });
+    // Sync all toggle buttons to show the OTHER language
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.textContent = lang === 'en' ? 'FI' : 'EN';
+    });
+  }
+
+  async function initLang() {
+    const saved = localStorage.getItem('lang');
+    if (saved === 'en' || saved === 'fi') { applyLang(saved); return; }
+    try {
+      const res = await fetch('https://api.country.is/', { signal: AbortSignal.timeout(2500) });
+      if (res.ok) {
+        const data = await res.json();
+        applyLang(data.country === 'FI' ? 'fi' : 'en');
+        return;
+      }
+    } catch (_) {}
+    // Fallback: browser language
+    applyLang(navigator.language?.startsWith('fi') ? 'fi' : 'en');
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      applyLang(window.LANG === 'en' ? 'fi' : 'en', true);
+    });
+  });
+
+  initLang();
+</script>
 
 <script>
   // ---- progress bar + mobile menu ----
@@ -386,16 +531,17 @@
           }
         } catch (_) {}
 
+        const t = window.STRINGS?.[window.LANG] || window.STRINGS.en;
         const container = document.getElementById('featured-post-container');
         if (container) {
           container.innerHTML =
             '<a class="card featured-post" href="post.html?slug=' + encodeURIComponent(featured.slug) + '">' +
-            '<div class="fp-eyebrow">Featured post</div>' +
+            '<div class="fp-eyebrow">' + escHtml(t['featured-eyebrow']) + '</div>' +
             '<h2>' + escHtml(featured.title) + '</h2>' +
             (excerpt ? '<p>' + escHtml(excerpt) + '</p>' : '') +
             '<div class="fp-footer">' +
             '<span class="fp-date">' + escHtml(featured.date) + '</span>' +
-            '<span class="fp-link">Read More →</span>' +
+            '<span class="fp-link">' + escHtml(t['read-more']) + '</span>' +
             '</div></a>';
         }
       }
