@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Writing — Sanuja</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #06070b;
+    --bg2: #0c0f16;
+    --glass: rgba(18, 22, 32, 0.55);
+    --ink: #eaf0f8;
+    --ink-dim: #8b95a8;
+    --ink-faint: #545d70;
+    --line: rgba(120, 140, 180, 0.13);
+    --blue: #2f8bff;
+    --blue-bright: #66aaff;
+    --cyan: #45d6ff;
+    --glow-rgb: 47,139,255;
+    --sans: "Sora", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  ::selection { background: var(--blue); color: #fff; }
+  a { color: inherit; text-decoration: none; }
+  #net { position: fixed; inset: 0; z-index: 0; }
+  .glow { position: fixed; width: 640px; height: 640px; border-radius: 50%; filter: blur(130px); background: radial-gradient(circle, rgba(var(--glow-rgb),0.16), transparent 70%); z-index: 0; pointer-events: none; top: -160px; left: 50%; transform: translateX(-50%); }
+  .progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: linear-gradient(90deg, var(--blue), var(--cyan)); box-shadow: 0 0 12px var(--cyan); z-index: 60; transition: width .1s linear; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 36px; position: relative; z-index: 2; }
+  @media (max-width: 640px) { .wrap { padding: 0 22px; } }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 18px 36px; backdrop-filter: blur(14px); background: linear-gradient(180deg, rgba(6,7,11,0.8), transparent); }
+  .brand { display: flex; align-items: center; gap: 11px; font-weight: 600; font-size: 16px; letter-spacing: -0.01em; }
+  .brand .node { width: 22px; height: 22px; position: relative; }
+  .brand .node::before, .brand .node::after { content: ""; position: absolute; border-radius: 50%; }
+  .brand .node::before { inset: 0; border: 1.5px solid var(--blue); }
+  .brand .node::after { width: 7px; height: 7px; background: var(--cyan); top: 7.5px; left: 7.5px; box-shadow: 0 0 10px var(--cyan); animation: pulse 2.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: .5; } }
+  .nav-links { display: flex; gap: 28px; font-size: 13px; color: var(--ink-dim); font-family: var(--mono); }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-toggle { display: none; width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 10px; background: var(--glass); backdrop-filter: blur(8px); cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 5px; }
+  .nav-toggle span { display: block; width: 17px; height: 1.5px; background: var(--ink); transition: transform .3s, opacity .3s; }
+  body.menu-open .nav-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  body.menu-open .nav-toggle span:nth-child(2) { opacity: 0; }
+  body.menu-open .nav-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+  .mobile-menu { position: fixed; inset: 0; z-index: 49; background: rgba(6,7,11,0.92); backdrop-filter: blur(16px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
+  body.menu-open .mobile-menu { opacity: 1; pointer-events: auto; }
+  .mobile-menu a { font-family: var(--mono); font-size: 24px; color: var(--ink-dim); padding: 12px; transition: color .2s, transform .2s; }
+  .mobile-menu a:hover { color: var(--cyan); transform: translateX(4px); }
+  @media (max-width: 720px) { .nav-links { display: none; } .nav-toggle { display: flex; } }
+  @media (min-width: 721px) { .mobile-menu { display: none; } }
+
+  section { padding: 100px 0; position: relative; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; color: var(--cyan); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; }
+  .sec-title { font-size: clamp(28px, 4.5vw, 48px); font-weight: 600; letter-spacing: -0.025em; margin-bottom: 48px; }
+  .sec-title .dim { color: var(--ink-faint); font-weight: 300; }
+
+  .card { background: var(--glass); border: 1px solid var(--line); border-radius: 18px; backdrop-filter: blur(12px); position: relative; overflow: hidden; transition: transform .3s cubic-bezier(.2,.7,.2,1), border-color .3s; will-change: transform; }
+  .card::before { content: ""; position: absolute; inset: 0; border-radius: 18px; padding: 1px; background: linear-gradient(130deg, rgba(102,170,255,0.4), transparent 40%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0; transition: opacity .3s; pointer-events: none; }
+  .card:hover::before { opacity: 1; }
+  .card:hover { border-color: rgba(102,170,255,0.3); }
+
+  .post { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 24px 28px; margin-bottom: 14px; }
+  .post .left { display: flex; align-items: center; gap: 20px; }
+  .post .num { font-family: var(--mono); font-size: 13px; color: var(--ink-faint); }
+  .post h3 { font-size: 18px; font-weight: 500; transition: color .25s; }
+  .post:hover h3 { color: var(--cyan); }
+  .post .state { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan); border: 1px solid var(--line); padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
+  @media (max-width: 560px) { .post { flex-direction: column; align-items: flex-start; } }
+
+  footer { padding: 40px 0; border-top: 1px solid var(--line); }
+  .foot-row { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; color: var(--ink-faint); flex-wrap: wrap; gap: 12px; }
+
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  .btn { font-size: 14px; font-weight: 500; padding: 14px 26px; border-radius: 12px; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: all .25s; }
+  .btn .arr { transition: transform .25s; }
+  .btn:hover .arr { transform: translateX(4px); }
+  .btn.glass { background: var(--glass); border: 1px solid var(--line); color: var(--ink); backdrop-filter: blur(8px); }
+  .btn.glass:hover { border-color: var(--blue); color: var(--cyan); }
+
+  #post-list:empty::after { content: "No posts yet."; font-family: var(--mono); font-size: 13px; color: var(--ink-faint); }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<canvas id="net"></canvas>
+<div class="glow"></div>
+
+<nav>
+  <a class="brand" href="index.html"><span class="node"></span>Sanuja</a>
+  <div class="nav-links">
+    <a href="index.html#about">about</a><a href="index.html#work">work</a><a href="index.html#stack">stack</a><a href="blog.html" style="color: var(--cyan);">writing</a><a href="index.html#contact">contact</a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#about">about</a><a href="index.html#work">work</a><a href="index.html#stack">stack</a><a href="blog.html" style="color: var(--cyan);">writing</a><a href="index.html#contact">contact</a>
+</div>
+
+<div class="wrap">
+  <section style="padding-top: 120px;">
+    <div class="eyebrow reveal">Writing</div>
+    <h1 class="sec-title reveal">Notes from the <span class="dim">build.</span></h1>
+    <div id="post-list" class="reveal"><!-- populated by JS --></div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap"><div class="foot-row"><span>© 2026 SANUJA — AI-DRIVEN SOFTWARE ENGINEER</span><span>BUILT WITH .NET 10 · CRAFTED, NOT GENERATED</span></div></div>
+</footer>
+
+<script>
+  const progress = document.getElementById('progress');
+  addEventListener('scroll', () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    progress.style.width = (max > 0 ? (scrollY / max) * 100 : 0) + '%';
+  }, { passive: true });
+  const navToggle = document.getElementById('navToggle');
+  navToggle.addEventListener('click', () => document.body.classList.toggle('menu-open'));
+  document.querySelectorAll('#mobileMenu a').forEach(a => a.addEventListener('click', () => document.body.classList.remove('menu-open')));
+
+  const cv = document.getElementById('net');
+  const ctx = cv.getContext('2d');
+  let W, H, nodes = [], mouse = { x: -9999, y: -9999 };
+  function resize() { W = cv.width = innerWidth; H = cv.height = innerHeight; }
+  resize(); addEventListener('resize', resize);
+  function buildNodes() {
+    nodes = [];
+    const count = Math.min(80, Math.floor(innerWidth / 14));
+    for (let i = 0; i < count; i++) nodes.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35 });
+  }
+  buildNodes();
+  addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    for (const n of nodes) {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+      const dm = Math.hypot(n.x - mouse.x, n.y - mouse.y);
+      if (dm < 150) { const f = (150 - dm) / 150 * 0.6; n.x += (n.x - mouse.x) / dm * f; n.y += (n.y - mouse.y) / dm * f; }
+    }
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i], b = nodes[j];
+        const d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (d < 130) { ctx.strokeStyle = `rgba(70,140,230,${(1 - d / 130) * 0.28})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+      }
+    }
+    for (const n of nodes) {
+      const near = Math.hypot(n.x - mouse.x, n.y - mouse.y) < 150;
+      ctx.fillStyle = near ? 'rgba(69,214,255,0.9)' : 'rgba(110,160,230,0.55)';
+      ctx.beginPath(); ctx.arc(n.x, n.y, near ? 2.6 : 1.6, 0, Math.PI * 2); ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  const revealEls = [...document.querySelectorAll('.reveal')];
+  revealEls.forEach((el, i) => { el.style.transitionDelay = (i % 3) * 80 + 'ms'; });
+  function reveal() {
+    const h = innerHeight * 0.92;
+    revealEls.forEach(el => { if (!el.classList.contains('in') && el.getBoundingClientRect().top < h) el.classList.add('in'); });
+  }
+  reveal();
+  addEventListener('scroll', reveal, { passive: true });
+  addEventListener('resize', reveal);
+  addEventListener('load', reveal);
+  requestAnimationFrame(reveal);
+  setTimeout(() => { revealEls.forEach(el => { el.style.transition = 'none'; el.classList.add('in'); }); }, 500);
+</script>
+
+<script>
+  function escHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  (async function () {
+    try {
+      const res = await fetch('posts/index.json');
+      if (!res.ok) return;
+      const posts = await res.json();
+      const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date));
+      const listEl = document.getElementById('post-list');
+      if (!listEl) return;
+      listEl.innerHTML = sorted.map((p, i) => {
+        const num = String(i + 1).padStart(2, '0');
+        return '<a class="card post" href="post.html?slug=' + encodeURIComponent(p.slug) + '">' +
+          '<div class="left"><span class="num">' + num + '</span><h3>' + escHtml(p.title) + '</h3></div>' +
+          (p.featured ? '<span class="state">Featured</span>' : '<span class="state">' + escHtml(p.date) + '</span>') +
+          '</a>';
+      }).join('');
+    } catch (e) {
+      console.warn('Failed to load posts:', e);
+    }
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sanuja — Software Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #06070b;
+    --bg2: #0c0f16;
+    --glass: rgba(18, 22, 32, 0.55);
+    --ink: #eaf0f8;
+    --ink-dim: #8b95a8;
+    --ink-faint: #545d70;
+    --line: rgba(120, 140, 180, 0.13);
+    --blue: #2f8bff;
+    --blue-bright: #66aaff;
+    --cyan: #45d6ff;
+    --glow-rgb: 47,139,255;
+    --sans: "Sora", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  ::selection { background: var(--blue); color: #fff; }
+  a { color: inherit; text-decoration: none; }
+  #net { position: fixed; inset: 0; z-index: 0; transition: opacity .4s ease; }
+  .glow { position: fixed; width: 640px; height: 640px; border-radius: 50%; filter: blur(130px); background: radial-gradient(circle, rgba(var(--glow-rgb),0.16), transparent 70%); z-index: 0; pointer-events: none; top: -160px; left: 50%; transform: translateX(-50%); }
+  /* scroll progress */
+  .progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: linear-gradient(90deg, var(--blue), var(--cyan)); box-shadow: 0 0 12px var(--cyan); z-index: 60; transition: width .1s linear; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 36px; position: relative; z-index: 2; }
+  @media (max-width: 640px) { .wrap { padding: 0 22px; } }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 18px 36px; backdrop-filter: blur(14px); background: linear-gradient(180deg, rgba(6,7,11,0.8), transparent); }
+  .brand { display: flex; align-items: center; gap: 11px; font-weight: 600; font-size: 16px; letter-spacing: -0.01em; }
+  .brand .node { width: 22px; height: 22px; position: relative; }
+  .brand .node::before, .brand .node::after { content: ""; position: absolute; border-radius: 50%; }
+  .brand .node::before { inset: 0; border: 1.5px solid var(--blue); }
+  .brand .node::after { width: 7px; height: 7px; background: var(--cyan); top: 7.5px; left: 7.5px; box-shadow: 0 0 10px var(--cyan); animation: pulse 2.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: .5; } }
+  .nav-links { display: flex; gap: 28px; font-size: 13px; color: var(--ink-dim); font-family: var(--mono); }
+  .nav-links a:hover { color: var(--cyan); }
+  .nav-toggle { display: none; width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 10px; background: var(--glass); backdrop-filter: blur(8px); cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 5px; }
+  .nav-toggle span { display: block; width: 17px; height: 1.5px; background: var(--ink); transition: transform .3s, opacity .3s; }
+  body.menu-open .nav-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  body.menu-open .nav-toggle span:nth-child(2) { opacity: 0; }
+  body.menu-open .nav-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+  .mobile-menu { position: fixed; inset: 0; z-index: 49; background: rgba(6,7,11,0.92); backdrop-filter: blur(16px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
+  body.menu-open .mobile-menu { opacity: 1; pointer-events: auto; }
+  .mobile-menu a { font-family: var(--mono); font-size: 24px; color: var(--ink-dim); padding: 12px; transition: color .2s, transform .2s; }
+  .mobile-menu a:hover { color: var(--cyan); transform: translateX(4px); }
+  @media (max-width: 720px) { .nav-links { display: none; } .nav-toggle { display: flex; } }
+  @media (min-width: 721px) { .mobile-menu { display: none; } }
+
+  /* hero */
+  header { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 100px 0 60px; }
+  .tag { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 12px; color: var(--cyan); border: 1px solid var(--line); background: var(--glass); padding: 8px 16px; border-radius: 30px; backdrop-filter: blur(8px); margin-bottom: 34px; width: fit-content; }
+  .tag .live { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
+  h1 { font-size: clamp(46px, 9.5vw, 122px); font-weight: 600; line-height: 0.95; letter-spacing: -0.04em; }
+  h1 .dim { color: var(--ink-faint); font-weight: 300; }
+  h1 .grad { background: linear-gradient(120deg, var(--blue), var(--cyan)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-sub { display: flex; gap: 40px; align-items: flex-end; margin-top: 42px; flex-wrap: wrap; }
+  .hero-sub p { font-size: clamp(17px, 2.1vw, 21px); color: var(--ink-dim); max-width: 480px; line-height: 1.6; }
+  .hero-sub p b { color: var(--ink); font-weight: 500; }
+  .cta { display: flex; gap: 14px; margin-top: 38px; flex-wrap: wrap; }
+  .btn { font-size: 14px; font-weight: 500; padding: 14px 26px; border-radius: 12px; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: all .25s; }
+  .btn .arr { transition: transform .25s; }
+  .btn:hover .arr { transform: translateX(4px); }
+  .btn.primary { background: linear-gradient(120deg, var(--blue), color-mix(in oklab, var(--blue) 78%, #000)); color: #fff; box-shadow: 0 10px 40px -10px rgba(var(--glow-rgb),0.55); }
+  .btn.primary:hover { transform: translateY(-3px); box-shadow: 0 18px 50px -10px rgba(var(--glow-rgb),0.7); }
+  .btn.glass { background: var(--glass); border: 1px solid var(--line); color: var(--ink); backdrop-filter: blur(8px); }
+  .btn.glass:hover { border-color: var(--blue); color: var(--cyan); }
+  .stat-strip { display: flex; gap: 0; margin-top: 70px; border: 1px solid var(--line); border-radius: 16px; background: var(--glass); backdrop-filter: blur(10px); overflow: hidden; }
+  .stat { flex: 1; padding: 22px 26px; border-right: 1px solid var(--line); }
+  .stat:last-child { border-right: none; }
+  .stat .v { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; }
+  .stat .v .u { color: var(--cyan); }
+  .stat .k { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); margin-top: 4px; letter-spacing: 0.04em; }
+  @media (max-width: 640px) { .stat-strip { flex-wrap: wrap; } .stat { flex: 1 1 50%; border-bottom: 1px solid var(--line); } }
+
+  section { padding: 100px 0; position: relative; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; color: var(--cyan); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px; }
+  .sec-title { font-size: clamp(28px, 4.5vw, 48px); font-weight: 600; letter-spacing: -0.025em; margin-bottom: 48px; }
+  .sec-title .dim { color: var(--ink-faint); font-weight: 300; }
+
+  /* glass card base */
+  .card { background: var(--glass); border: 1px solid var(--line); border-radius: 18px; backdrop-filter: blur(12px); position: relative; overflow: hidden; transition: transform .3s cubic-bezier(.2,.7,.2,1), border-color .3s; will-change: transform; }
+  .card::before { content: ""; position: absolute; inset: 0; border-radius: 18px; padding: 1px; background: linear-gradient(130deg, rgba(102,170,255,0.4), transparent 40%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0; transition: opacity .3s; pointer-events: none; }
+  .card:hover::before { opacity: 1; }
+  .card:hover { border-color: rgba(102,170,255,0.3); }
+
+  /* about */
+  .about-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 28px; }
+  @media (max-width: 820px) { .about-grid { grid-template-columns: 1fr; } }
+  .about-main { padding: 40px; }
+  .about-main p { font-size: 18px; color: var(--ink-dim); margin-bottom: 20px; line-height: 1.72; }
+  .about-main p b { color: var(--ink); font-weight: 500; }
+  .about-side { padding: 34px; display: flex; flex-direction: column; gap: 0; }
+  .kv { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 13px; }
+  .kv:last-child { border-bottom: none; }
+  .kv .k { color: var(--ink-faint); }
+  .kv .v { color: var(--ink); }
+  .kv .v .hl { color: var(--cyan); }
+
+  /* projects — tilt cards */
+  .proj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+  @media (max-width: 760px) { .proj-grid { grid-template-columns: 1fr; } }
+  .proj-card { padding: 32px; min-height: 230px; display: flex; flex-direction: column; cursor: pointer; }
+  .proj-card.wide { grid-column: 1 / -1; }
+  .proj-card .top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: auto; }
+  .proj-card .idx { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
+  .proj-card .badge { font-family: var(--mono); font-size: 11px; color: var(--cyan); border: 1px solid var(--line); padding: 5px 11px; border-radius: 20px; display: inline-flex; align-items: center; gap: 7px; }
+  .proj-card .badge .d { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+  .proj-card h3 { font-size: 25px; font-weight: 600; letter-spacing: -0.02em; margin: 30px 0 12px; }
+  .proj-card p { color: var(--ink-dim); font-size: 15px; line-height: 1.6; }
+  .proj-card .tstack { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+  .chip { font-family: var(--mono); font-size: 11px; color: var(--ink-dim); border: 1px solid var(--line); padding: 4px 10px; border-radius: 6px; background: rgba(255,255,255,0.02); }
+
+  /* stack */
+  .stack-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  @media (max-width: 860px) { .stack-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .stack-grid { grid-template-columns: 1fr; } }
+  .stack-card { padding: 26px 24px; }
+  .stack-card h4 { font-family: var(--mono); font-size: 11px; color: var(--cyan); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+  .stack-card h4::before { content: ""; width: 6px; height: 6px; background: var(--cyan); border-radius: 50%; box-shadow: 0 0 8px var(--cyan); }
+  .stack-card ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .stack-card li { font-size: 15px; color: var(--ink-dim); transition: color .2s, transform .2s; }
+  .stack-card li:hover { color: var(--ink); transform: translateX(4px); }
+
+  /* writing */
+  .post { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 24px 28px; margin-bottom: 14px; }
+  .post .left { display: flex; align-items: center; gap: 20px; }
+  .post .num { font-family: var(--mono); font-size: 13px; color: var(--ink-faint); }
+  .post h3 { font-size: 18px; font-weight: 500; transition: color .25s; }
+  .post:hover h3 { color: var(--cyan); }
+  .post .state { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan); border: 1px solid var(--line); padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
+  @media (max-width: 560px) { .post { flex-direction: column; align-items: flex-start; } }
+
+  /* contact */
+  .contact-card { padding: 60px 48px; text-align: center; }
+  .contact-card h2 { font-size: clamp(32px, 6vw, 64px); font-weight: 600; letter-spacing: -0.03em; line-height: 1; margin-bottom: 18px; }
+  .contact-card h2 .grad { background: linear-gradient(120deg, var(--blue-bright), var(--cyan)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .contact-card p { color: var(--ink-dim); font-size: 17px; max-width: 440px; margin: 0 auto 34px; }
+  .clinks { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  footer { padding: 40px 0; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
+
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* featured post */
+  #featured-section { padding: 60px 0 0; }
+  .featured-post { padding: 36px 40px; display: flex; flex-direction: column; gap: 14px; cursor: pointer; transition: border-color .3s, transform .3s cubic-bezier(.2,.7,.2,1); }
+  .featured-post:hover { border-color: rgba(102,170,255,0.3); transform: translateY(-3px); }
+  .featured-post .fp-eyebrow { font-family: var(--mono); font-size: 11px; color: var(--cyan); letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+  .featured-post .fp-eyebrow::before { content: ""; width: 6px; height: 6px; background: var(--cyan); border-radius: 50%; box-shadow: 0 0 8px var(--cyan); }
+  .featured-post h2 { font-size: clamp(22px, 3.5vw, 34px); font-weight: 600; letter-spacing: -0.025em; line-height: 1.2; }
+  .featured-post p { color: var(--ink-dim); font-size: 16px; line-height: 1.68; max-width: 680px; }
+  .featured-post .fp-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+  .featured-post .fp-date { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
+  .featured-post .fp-link { font-family: var(--mono); font-size: 12px; color: var(--cyan); letter-spacing: 0.04em; display: flex; align-items: center; gap: 6px; transition: gap .2s; }
+  .featured-post:hover .fp-link { gap: 10px; }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<canvas id="net"></canvas>
+<div class="glow"></div>
+
+<nav>
+  <a class="brand" href="index.html"><span class="node"></span>A.Sanuja</a>
+  <div class="nav-links">
+    <a href="#writing">writing</a><a href="#work">work</a><a href="#stack">stack</a><a href="#contact">contact</a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#writing">writing</a><a href="#work">work</a><a href="#stack">stack</a><a href="#contact">contact</a>
+</div>
+
+<div class="wrap">
+  <header data-screen-label="hero">
+    <div class="tag reveal"><span class="live"></span>AI-Driven Software Engineer · Available</div>
+    <h1 class="reveal"><span class="dim">Engineering</span><br />the <span class="grad">intelligent</span> web.</h1>
+    <div class="hero-sub">
+      <p class="reveal">Seven years of secure, cloud-native <b>.NET</b> — now building at the edge of <b>AI-assisted</b> software engineering.</p>
+      <div class="cta reveal">
+        <a class="btn primary" href="#work">Explore work <span class="arr">→</span></a>
+        <a class="btn glass" href="https://github.com/sanuja-ariyapperuma" target="_blank" rel="noopener">GitHub <span class="arr">↗</span></a>
+      </div>
+    </div>
+    <div class="stat-strip reveal">
+      <div class="stat"><div class="v" data-count="7" data-suffix="+">0</div><div class="k">YEARS EXPERIENCE</div></div>
+      <div class="stat"><div class="v">.NET <span class="u">10</span></div><div class="k">CORE PLATFORM</div></div>
+      <div class="stat"><div class="v">C# · <span class="u">TS</span></div><div class="k">DAILY LANGUAGES</div></div>
+      <div class="stat"><div class="v">AI<span class="u">·</span>first</div><div class="k">ENGINEERING</div></div>
+    </div>
+  </header>
+
+  <section id="featured-section" class="reveal">
+    <div id="featured-post-container"><!-- populated by JS --></div>
+  </section>
+
+  <section id="writing" data-screen-label="writing">
+    <div class="eyebrow reveal">01 / Writing</div>
+    <h2 class="sec-title reveal">Notes from the <span class="dim">build.</span></h2>
+    <div id="writing-list" class="reveal"><!-- populated by JS --></div>
+    <div class="reveal" style="margin-top: 28px;">
+      <a class="btn glass" href="blog.html">All posts <span class="arr">→</span></a>
+    </div>
+  </section>
+
+  <section id="work" data-screen-label="work">
+    <div class="eyebrow reveal">02 / Selected Work</div>
+    <h2 class="sec-title reveal">Things I've <span class="dim">built &amp; explored.</span></h2>
+    <div class="proj-grid reveal">
+      <div class="card proj-card wide" data-tilt>
+        <div class="top"><span class="idx">/01</span><span class="badge"><span class="d"></span>Active R&amp;D</span></div>
+        <h3>AI-Assisted Engineering Practice</h3>
+        <p>Exploring how AI can effectively support quality software engineering — currently evaluating BMAD V6 and Matt Pocock's skill sets, each strong from a different angle, with the goal of mastering both.</p>
+        <div class="tstack" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:20px;"><span class="chip">BMAD V6</span><span class="chip">Agent skills</span><span class="chip">Spec-driven</span></div>
+      </div>
+      <div class="card proj-card" data-tilt>
+        <div class="top"><span class="idx">/02</span><span class="badge">Tooling</span></div>
+        <h3>Prompt Bank</h3>
+        <p>An app built to learn efficient use of Claude &amp; GitHub Copilot — leveraging custom agents, instructions and skills to raise code quality and cut hallucination.</p>
+        <div class="tstack" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:20px;"><span class="chip">Custom agents</span><span class="chip">Skills</span></div>
+      </div>
+      <div class="card proj-card" data-tilt>
+        <div class="top"><span class="idx">/03</span><span class="badge">Full-stack</span></div>
+        <h3>Travel Agency Platform</h3>
+        <p>Cloud-native app automating customer &amp; lead management for travel agencies. React front end, .NET Minimal API back end, MySQL.</p>
+        <div class="tstack" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:20px;"><span class="chip">React</span><span class="chip">.NET Minimal API</span><span class="chip">MySQL</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack" data-screen-label="stack">
+    <div class="eyebrow reveal">03 / Stack</div>
+    <h2 class="sec-title reveal">The <span class="dim">toolkit.</span></h2>
+    <div class="stack-grid reveal">
+      <div class="card stack-card"><h4>Languages</h4><ul><li>C#</li><li>TypeScript</li><li>JavaScript</li><li>SQL</li></ul></div>
+      <div class="card stack-card"><h4>Frameworks</h4><ul><li>.NET 10</li><li>ASP.NET</li><li>Minimal API</li><li>React</li></ul></div>
+      <div class="card stack-card"><h4>AI Toolchain</h4><ul><li>GitHub Copilot</li><li>Claude Code</li><li>BMAD V6</li><li>Matt Pocock skills</li></ul></div>
+      <div class="card stack-card"><h4>Data</h4><ul><li>PostgreSQL</li><li>MariaDB</li><li>MS SQL Server</li><li>MySQL</li></ul></div>
+    </div>
+  </section>
+
+  <section id="contact" data-screen-label="contact">
+    <div class="card contact-card reveal">
+      <div class="eyebrow" style="text-align:center;">04 / Contact</div>
+      <h2>Let's build something <span class="grad">intelligent.</span></h2>
+      <p>Open to collaboration on AI-driven engineering and secure .NET systems.</p>
+      <div class="clinks">
+        <a class="btn primary" href="https://github.com/sanuja-ariyapperuma" target="_blank" rel="noopener">GitHub <span class="arr">↗</span></a>
+        <a class="btn glass" href="#">Email <span class="arr">→</span></a>
+        <a class="btn glass" href="#">LinkedIn <span class="arr">↗</span></a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap"><span>© 2026 SANUJA — AI-DRIVEN SOFTWARE ENGINEER</span></div>
+</footer>
+
+<script>
+  // ---- progress bar + mobile menu ----
+  const progress = document.getElementById('progress');
+  addEventListener('scroll', () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    progress.style.width = (max > 0 ? (scrollY / max) * 100 : 0) + '%';
+  }, { passive: true });
+  const navToggle = document.getElementById('navToggle');
+  navToggle.addEventListener('click', () => document.body.classList.toggle('menu-open'));
+  document.querySelectorAll('#mobileMenu a').forEach(a => a.addEventListener('click', () => document.body.classList.remove('menu-open')));
+
+  // ---- node network ----
+  const NET = { enabled: true, count: 80, speed: 0.35, line: [70, 140, 230], node: [110, 160, 230], hi: [69, 214, 255] };
+  const cv = document.getElementById('net');
+  const ctx = cv.getContext('2d');
+  let W, H, nodes = [], mouse = { x: -9999, y: -9999 };
+  function resize() { W = cv.width = innerWidth; H = cv.height = innerHeight; }
+  resize(); addEventListener('resize', resize);
+  function buildNodes() {
+    nodes = [];
+    const count = Math.min(NET.count, Math.floor(innerWidth / 14));
+    for (let i = 0; i < count; i++) nodes.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * NET.speed, vy: (Math.random() - 0.5) * NET.speed });
+  }
+  buildNodes();
+  addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    if (NET.enabled) {
+      for (const n of nodes) {
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > W) n.vx *= -1;
+        if (n.y < 0 || n.y > H) n.vy *= -1;
+        const dm = Math.hypot(n.x - mouse.x, n.y - mouse.y);
+        if (dm < 150) { const f = (150 - dm) / 150 * 0.6; n.x += (n.x - mouse.x) / dm * f; n.y += (n.y - mouse.y) / dm * f; }
+      }
+      const [lr, lg, lb] = NET.line;
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i], b = nodes[j];
+          const d = Math.hypot(a.x - b.x, a.y - b.y);
+          if (d < 130) { ctx.strokeStyle = `rgba(${lr},${lg},${lb},${(1 - d / 130) * 0.28})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+        }
+      }
+      const [nr, ng, nb] = NET.node, [hr, hg, hb] = NET.hi;
+      for (const n of nodes) {
+        const near = Math.hypot(n.x - mouse.x, n.y - mouse.y) < 150;
+        ctx.fillStyle = near ? `rgba(${hr},${hg},${hb},0.9)` : `rgba(${nr},${ng},${nb},0.55)`;
+        ctx.beginPath(); ctx.arc(n.x, n.y, near ? 2.6 : 1.6, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  // ---- reveal (scroll-position based) ----
+  const revealEls = [...document.querySelectorAll('.reveal')];
+  revealEls.forEach((el, i) => { el.style.transitionDelay = (i % 3) * 80 + 'ms'; });
+  const counters = [...document.querySelectorAll('[data-count]')];
+  function runCount(el) {
+    if (el.dataset.done) return; el.dataset.done = '1';
+    const target = +el.dataset.count, suf = el.dataset.suffix || '';
+    let c = 0; const t = setInterval(() => { c++; el.textContent = c + suf; if (c >= target) clearInterval(t); }, 90);
+  }
+  function reveal() {
+    const h = innerHeight * 0.92;
+    revealEls.forEach(el => { if (!el.classList.contains('in') && el.getBoundingClientRect().top < h) el.classList.add('in'); });
+    counters.forEach(el => { if (!el.dataset.done && el.getBoundingClientRect().top < innerHeight * 0.85) runCount(el); });
+  }
+  reveal();
+  addEventListener('scroll', reveal, { passive: true });
+  addEventListener('resize', reveal);
+  addEventListener('load', reveal);
+  requestAnimationFrame(reveal);
+  setTimeout(() => { revealEls.forEach(el => { el.style.transition = 'none'; el.classList.add('in'); }); counters.forEach(runCount); }, 500);
+  document.querySelectorAll('[data-tilt]').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `perspective(800px) rotateY(${px * 6}deg) rotateX(${-py * 6}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave', () => card.style.transform = '');
+  });
+</script>
+
+<script>
+  // ---- blog: featured post + writing list ----
+  function escHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  (async function () {
+    try {
+      const res = await fetch('posts/index.json');
+      if (!res.ok) return;
+      const posts = await res.json();
+
+      // Featured post card
+      const featured = posts.find(p => p.featured);
+      if (featured) {
+        let excerpt = '';
+        try {
+          const mdRes = await fetch('posts/' + featured.slug + '.md');
+          if (mdRes.ok) {
+            const raw = await mdRes.text();
+            const lines = raw.split('\n');
+            const paraLines = [];
+            let inPara = false;
+            for (const line of lines) {
+              if (!inPara && line.trim() && !line.startsWith('#')) inPara = true;
+              if (inPara) { if (line.trim() === '') break; paraLines.push(line); }
+            }
+            excerpt = paraLines.join(' ').replace(/[*_`[\]]/g, '').trim();
+            if (excerpt.length > 220) excerpt = excerpt.slice(0, 220).trimEnd() + '…';
+          }
+        } catch (_) {}
+
+        const container = document.getElementById('featured-post-container');
+        if (container) {
+          container.innerHTML =
+            '<a class="card featured-post" href="post.html?slug=' + encodeURIComponent(featured.slug) + '">' +
+            '<div class="fp-eyebrow">Featured post</div>' +
+            '<h2>' + escHtml(featured.title) + '</h2>' +
+            (excerpt ? '<p>' + escHtml(excerpt) + '</p>' : '') +
+            '<div class="fp-footer">' +
+            '<span class="fp-date">' + escHtml(featured.date) + '</span>' +
+            '<span class="fp-link">Read More →</span>' +
+            '</div></a>';
+        }
+      }
+
+      // Writing section — 3 most recent posts
+      const listEl = document.getElementById('writing-list');
+      if (listEl) {
+        const recent = [...posts].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3);
+        listEl.innerHTML = recent.map((p, i) =>
+          '<a class="card post" href="post.html?slug=' + encodeURIComponent(p.slug) + '">' +
+          '<div class="left"><span class="num">0' + (i + 1) + '</span><h3>' + escHtml(p.title) + '</h3></div>' +
+          '<span class="state">' + escHtml(p.date) + '</span></a>'
+        ).join('');
+      }
+    } catch (e) {
+      console.warn('Blog data unavailable:', e);
+    }
+  })();
+</script>
+</body>
+</html>
